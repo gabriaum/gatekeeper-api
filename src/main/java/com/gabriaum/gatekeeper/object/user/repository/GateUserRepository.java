@@ -3,4 +3,9 @@ package com.gabriaum.gatekeeper.object.user.repository;
 import com.gabriaum.gatekeeper.object.user.GateUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface GateUserRepository extends JpaRepository<GateUser, Long> {}
+import java.util.Optional;
+
+public interface GateUserRepository extends JpaRepository<GateUser, Long> {
+    Optional<GateUser> findByEmail(String email);
+    Optional<GateUser> findByCpf(String cpf);
+}
