@@ -1,4 +1,4 @@
-package com.gabriaum.gatekeeper.infra;
+package com.gabriaum.gatekeeper.infra.service;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
