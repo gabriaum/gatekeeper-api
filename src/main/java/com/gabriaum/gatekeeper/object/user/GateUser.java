@@ -1,5 +1,6 @@
 package com.gabriaum.gatekeeper.object.user;
 
+import com.gabriaum.gatekeeper.object.audit.GateUserAudit;
 import com.gabriaum.gatekeeper.object.user.enums.GateUserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.data.relational.core.mapping.Table;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -35,6 +37,9 @@ public class GateUser implements UserDetails {
 
     @Column(nullable = false)
     private GateUserRole role;
+
+    @OneToMany(mappedBy = "gateUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<GateUserAudit> audits = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
