@@ -30,7 +30,7 @@ public class GateUserAuditRegisterEntranceController {
     @PostMapping("/admin")
     public ResponseEntity<?> onRegisterByAdminEntrance(
             @RequestBody GateUserAuditRegisterEntranceDTO entranceDTO
-            ) {
+    ) {
         auditService.registerEntranceByCpf(entranceDTO.targetCPF());
         return ResponseEntity.ok("Entrada registrada com sucesso.");
     }
