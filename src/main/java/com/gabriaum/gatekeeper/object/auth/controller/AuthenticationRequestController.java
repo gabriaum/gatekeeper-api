@@ -3,6 +3,7 @@ package com.gabriaum.gatekeeper.object.auth.controller;
 import com.gabriaum.gatekeeper.object.auth.AuthenticationRequest;
 import com.gabriaum.gatekeeper.object.auth.AuthenticationRequestMapper;
 import com.gabriaum.gatekeeper.object.auth.dto.AuthenticationLoginRequestDTO;
+import com.gabriaum.gatekeeper.object.auth.dto.AuthenticationRegisterRequestDTO;
 import com.gabriaum.gatekeeper.object.auth.repository.AuthenticationRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class AuthenticationRequestController {
 
     @PostMapping()
     public ResponseEntity<?> onRegister(
-            @RequestBody AuthenticationLoginRequestDTO requestDTO
+            @RequestBody AuthenticationRegisterRequestDTO requestDTO
     ) {
         AuthenticationRequest request = requestMapper.toEntityByDTO(requestDTO);
         requestRepository.save(request);
