@@ -21,7 +21,7 @@ public class GateUserAuditExitService {
 
     public void registerExit(GateUser user) {
         GateUserAudit audit = auditRepository
-                .findTopByGateUserAndExitAtIsNullOrderByEntranceAtDesc(user)
+                .findTopByGateUserAndExitInIsNullOrderByEntranceInDesc(user)
                 .orElseThrow(() ->
                         new BusinessException(
                                 "Nenhuma entrada aberta encontrada para registrar saída.",
@@ -45,7 +45,7 @@ public class GateUserAuditExitService {
                 );
 
         GateUserAudit audit = auditRepository
-                .findTopByGateUserAndExitAtIsNullOrderByEntranceAtDesc(user)
+                .findTopByGateUserAndExitInIsNullOrderByEntranceInDesc(user)
                 .orElseThrow(() ->
                         new BusinessException(
                                 "O usuário não possui entrada aberta.",

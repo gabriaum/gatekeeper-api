@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface GateUserAuditRepository extends JpaRepository<GateUserAudit, Long> {
-    Optional<GateUserAudit> findTopByGateUserAndExitAtIsNullOrderByEntranceAtDesc(GateUser gateUser);
+    Optional<GateUserAudit> findTopByGateUserAndExitInIsNullOrderByEntranceInDesc(GateUser gateUser);
 }
