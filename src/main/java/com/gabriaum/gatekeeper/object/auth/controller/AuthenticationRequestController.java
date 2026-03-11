@@ -3,6 +3,7 @@ package com.gabriaum.gatekeeper.object.auth.controller;
 import com.gabriaum.gatekeeper.object.auth.AuthenticationRequest;
 import com.gabriaum.gatekeeper.object.auth.AuthenticationRequestMapper;
 import com.gabriaum.gatekeeper.object.auth.dto.AuthenticationRegisterRequestDTO;
+import com.gabriaum.gatekeeper.object.auth.factory.AuthenticationRequestResponseFactory;
 import com.gabriaum.gatekeeper.object.auth.repository.AuthenticationRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,9 @@ public class AuthenticationRequestController {
 
     @Autowired
     private AuthenticationRequestMapper requestMapper;
+
+    @Autowired
+    private AuthenticationRequestResponseFactory requestResponseFactory;
 
     @PostMapping("/register")
     public ResponseEntity<?> onRegister(
@@ -33,6 +37,9 @@ public class AuthenticationRequestController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> onGetAll() {
         return ResponseEntity
-                .ok(requestRepository.findAll());
+                .ok(requestRepository.findAll()
+                        .stream()
+                        .map(requestResponseFactory::createByRequestId)
+                        .toList());
     }
 }
