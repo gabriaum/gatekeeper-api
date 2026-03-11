@@ -32,7 +32,8 @@ public class SecurityConfig {
                             "/v3/api-docs/**",
                             "/swagger-ui.html"
                     ).permitAll()
-                    .requestMatchers("/api/v1/authentication/**").permitAll()
+                    .requestMatchers("/api/v1/authentication/login").permitAll()
+                    .requestMatchers("/api/v1/authentication/register").permitAll()
                 .anyRequest().authenticated())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(authenticationEntryPoint))
