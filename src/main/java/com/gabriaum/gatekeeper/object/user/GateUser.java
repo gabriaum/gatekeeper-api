@@ -35,6 +35,7 @@ public class GateUser implements UserDetails {
     private String password;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private GateUserRole role;
 
     @OneToMany(mappedBy = "gateUser", cascade = CascadeType.ALL, orphanRemoval = true)
