@@ -2,18 +2,16 @@ package com.gabriaum.gatekeeper.object.auth.controller;
 
 import com.gabriaum.gatekeeper.object.auth.AuthenticationRequest;
 import com.gabriaum.gatekeeper.object.auth.AuthenticationRequestMapper;
-import com.gabriaum.gatekeeper.object.auth.dto.AuthenticationLoginRequestDTO;
 import com.gabriaum.gatekeeper.object.auth.dto.AuthenticationRegisterRequestDTO;
+import com.gabriaum.gatekeeper.object.auth.factory.AuthenticationRequestResponseFactory;
 import com.gabriaum.gatekeeper.object.auth.repository.AuthenticationRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/authentication/register")
+@RequestMapping("/api/v1/authentication")
 public class AuthenticationRequestController {
     @Autowired
     private AuthenticationRequestRepository requestRepository;
@@ -21,7 +19,10 @@ public class AuthenticationRequestController {
     @Autowired
     private AuthenticationRequestMapper requestMapper;
 
-    @PostMapping()
+    @Autowired
+    private AuthenticationRequestResponseFactory requestResponseFactory;
+
+    @PostMapping("/register")
     public ResponseEntity<?> onRegister(
             @RequestBody AuthenticationRegisterRequestDTO requestDTO
     ) {
@@ -30,5 +31,15 @@ public class AuthenticationRequestController {
 
         return ResponseEntity
                 .ok("A sua requisição de registro foi cadastrada com sucesso.");
+    }
+
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> onGetAll() {
+        return ResponseEntity
+                .ok(requestRepository.findAll()
+                        .stream()
+                        .map(requestResponseFactory::createByRequestId)
+                        .toList());
     }
 }
