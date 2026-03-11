@@ -41,6 +41,12 @@ public class GateUser implements UserDetails {
     @OneToMany(mappedBy = "gateUser", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GateUserAudit> audits = new ArrayList<>();
 
+    @PrePersist
+    private void prePersist() {
+        if (role == null)
+            role = GateUserRole.DEFAULT;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(() -> "ROLE_" + role.name());
