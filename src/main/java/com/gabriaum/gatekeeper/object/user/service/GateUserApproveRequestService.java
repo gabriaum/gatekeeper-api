@@ -4,23 +4,25 @@ import com.gabriaum.gatekeeper.object.auth.AuthenticationRequest;
 import com.gabriaum.gatekeeper.object.auth.repository.AuthenticationRequestRepository;
 import com.gabriaum.gatekeeper.object.user.factory.GateUserFactory;
 import com.gabriaum.gatekeeper.object.user.repository.GateUserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class GateUserApproveRequestService {
-    @Autowired
-    private AuthenticationRequestRepository requestRepository;
+    private final AuthenticationRequestRepository requestRepository;
+    private final GateUserRepository repository;
+    private final GateUserFactory factory;
 
-    @Autowired
-    private GateUserRepository repository;
-
-    @Autowired
-    private GateUserFactory factory;
-
+    @Transactional
     public void approveRequest(Long id) {
-        AuthenticationRequest authenticationRequest = requestRepository.findById(id).orElseThrow();
-        repository.save(factory.createByRequest(authenticationRequest));
+        AuthenticationRequest request = requestRepository
+                .findById(id)
+                .orElseThrow();
+
+        repository.save(factory.createByRequest(request));
+
         requestRepository.deleteById(id);
     }
 }
