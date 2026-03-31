@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.Instant;
 
 @SpringBootTest(classes = AuthenticationRequest.class)
-public class AuthenticationRequestTest {
+class AuthenticationRequestTest {
     private AuthenticationRequest authenticationRequest;
 
     @BeforeEach
