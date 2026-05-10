@@ -71,6 +71,59 @@ Ao iniciar, se não existir nenhum usuário `ADMIN`, o projeto cria automaticame
 
 Esse comportamento está em `src/main/java/com/gabriaum/gatekeeper/GateKeeperAdminUser.java`.
 
+## Iniciar com Docker (recomendado)
+
+Pré-requisitos:
+
+- Docker instalado (Docker Desktop ou engine + docker-compose)
+
+O repositório já inclui um `Dockerfile` para criar a imagem da aplicação e um `compose.yaml` para executar a aplicação junto com um container MySQL.
+
+1) Usando Docker Compose (recomendado)
+
+No diretório do projeto execute (PowerShell):
+
+```powershell
+docker compose -f compose.yaml up --build -d
+```
+
+Comandos úteis:
+
+```powershell
+# Ver logs em tempo real
+docker compose -f compose.yaml logs -f api
+
+# Parar e remover containers, redes e volumes criados pelo compose
+docker compose -f compose.yaml down -v
+```
+
+O `compose.yaml` já configura um serviço `mysql` (porta 3306) e o serviço `api` ligado a ele. As variáveis de ambiente necessárias para a aplicação (como `SPRING_DATASOURCE_URL`, `SPRING_DATASOURCE_USERNAME` e `SPRING_DATASOURCE_PASSWORD`) são definidas no `compose.yaml`.
+
+2) Construir a imagem manualmente e executar com `docker run`
+
+Para construir a imagem com o `Dockerfile`:
+
+```powershell
+docker build -t gatekeeper:latest .
+```
+
+E executar (exemplo mínimo — lembre-se que a aplicação precisa de um MySQL acessível):
+
+```powershell
+# Executando apenas a API (pressupõe que exista um DB em mysql:3306 na rede acessível)
+docker run --name gatekeeper -p 8080:8080 \
+  -e SPRING_DATASOURCE_URL="jdbc:mysql://mysql:3306/gatekeeper?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true" \
+  -e SPRING_DATASOURCE_USERNAME=gatekeeper \
+  -e SPRING_DATASOURCE_PASSWORD=gatekeeper \
+  -d gatekeeper:latest
+```
+
+Observações:
+
+- Se usar a abordagem com `docker run`, você precisará prover um container MySQL separado ou apontar a variável `SPRING_DATASOURCE_URL` para um banco existente.
+- O `compose.yaml` incluído é a forma mais simples para rodar tudo localmente (API + MySQL) porque já monta um volume para os dados do MySQL e aguarda o serviço do banco via `healthcheck`.
+
+
 ## Como rodar testes
 
 No Windows (PowerShell):
