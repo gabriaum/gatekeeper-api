@@ -1,16 +1,16 @@
 package com.gabriaum.gatekeeper.infra.security.service;
 
 import com.gabriaum.gatekeeper.object.user.repository.GateUserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
-    @Autowired
-    private GateUserRepository repository;
+    private final GateUserRepository repository;
 
     @Override
     public UserDetails loadUserByUsername(String cpf) throws UsernameNotFoundException {

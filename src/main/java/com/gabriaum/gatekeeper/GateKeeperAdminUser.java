@@ -4,19 +4,17 @@ import com.gabriaum.gatekeeper.infra.service.CryptographyService;
 import com.gabriaum.gatekeeper.object.user.GateUser;
 import com.gabriaum.gatekeeper.object.user.enums.GateUserRole;
 import com.gabriaum.gatekeeper.object.user.repository.GateUserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class GateKeeperAdminUser implements CommandLineRunner {
-    @Autowired
-    private GateUserRepository repository;
-
-    @Autowired
-    private CryptographyService cryptographyService;
+    private final GateUserRepository repository;
+    private final CryptographyService cryptographyService;
 
     @Override
     public void run(String... args) throws Exception {

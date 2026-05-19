@@ -19,10 +19,7 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
-    @Autowired
     private final TokenService tokenService;
-
-    @Autowired
     private final GateUserRepository gateUserRepository;
 
     @Override

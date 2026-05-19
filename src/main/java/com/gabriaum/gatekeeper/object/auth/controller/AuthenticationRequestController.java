@@ -5,22 +5,18 @@ import com.gabriaum.gatekeeper.object.auth.AuthenticationRequestMapper;
 import com.gabriaum.gatekeeper.object.auth.dto.AuthenticationRegisterRequestDTO;
 import com.gabriaum.gatekeeper.object.auth.factory.AuthenticationRequestResponseFactory;
 import com.gabriaum.gatekeeper.object.auth.repository.AuthenticationRequestRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/authentication")
+@RequiredArgsConstructor
 public class AuthenticationRequestController {
-    @Autowired
-    private AuthenticationRequestRepository requestRepository;
-
-    @Autowired
-    private AuthenticationRequestMapper requestMapper;
-
-    @Autowired
-    private AuthenticationRequestResponseFactory requestResponseFactory;
+    private final AuthenticationRequestRepository requestRepository;
+    private final AuthenticationRequestMapper requestMapper;
+    private final AuthenticationRequestResponseFactory requestResponseFactory;
 
     @PostMapping("/register")
     public ResponseEntity<?> onRegister(

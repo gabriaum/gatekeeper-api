@@ -1,13 +1,13 @@
 package com.gabriaum.gatekeeper.object.user.service;
 
 import com.gabriaum.gatekeeper.object.auth.repository.AuthenticationRequestRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class GateUserFailRequestService {
-    @Autowired
-    private AuthenticationRequestRepository requestRepository;
+    private final AuthenticationRequestRepository requestRepository;
 
     public void failRequest(Long id) {
         requestRepository.deleteById(id);

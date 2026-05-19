@@ -3,7 +3,7 @@ package com.gabriaum.gatekeeper.object.audit.controller;
 import com.gabriaum.gatekeeper.object.audit.dto.GateUserAuditRegisterEntranceDTO;
 import com.gabriaum.gatekeeper.object.audit.service.GateUserAuditExitService;
 import com.gabriaum.gatekeeper.object.user.GateUser;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/audit/register/exit")
+@RequiredArgsConstructor
 public class GateUserAuditRegisterExitController {
-    @Autowired
-    private GateUserAuditExitService auditExitService;
+    private final GateUserAuditExitService auditExitService;
 
     @PostMapping("/self")
     public ResponseEntity<?> registerExit(

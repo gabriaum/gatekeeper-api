@@ -5,7 +5,7 @@ import com.gabriaum.gatekeeper.object.audit.repository.GateUserAuditRepository;
 import com.gabriaum.gatekeeper.object.audit.service.GateUserAuditEntranceService;
 import com.gabriaum.gatekeeper.object.user.GateUser;
 import com.gabriaum.gatekeeper.object.user.repository.GateUserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,15 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/audit/register/entrance")
+@RequiredArgsConstructor
 public class GateUserAuditRegisterEntranceController {
-    @Autowired
-    private GateUserAuditRepository auditRepository;
-
-    @Autowired
-    private GateUserRepository gateUserRepository;
-
-    @Autowired
-    private GateUserAuditEntranceService auditService;
+    private final GateUserAuditRepository auditRepository;
+    private final GateUserRepository gateUserRepository;
+    private final GateUserAuditEntranceService auditService;
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/admin")
