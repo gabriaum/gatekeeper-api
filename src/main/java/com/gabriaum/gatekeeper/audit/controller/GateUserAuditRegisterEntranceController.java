@@ -1,0 +1,41 @@
+package com.gabriaum.gatekeeper.audit.controller;
+
+import com.gabriaum.gatekeeper.audit.dto.GateUserAuditRegisterEntranceDTO;
+import com.gabriaum.gatekeeper.audit.repository.GateUserAuditRepository;
+import com.gabriaum.gatekeeper.audit.service.GateUserAuditEntranceService;
+import com.gabriaum.gatekeeper.user.GateUser;
+import com.gabriaum.gatekeeper.user.repository.GateUserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/v1/audit/register/entrance")
+@RequiredArgsConstructor
+public class GateUserAuditRegisterEntranceController {
+    private final GateUserAuditRepository auditRepository;
+    private final GateUserRepository gateUserRepository;
+    private final GateUserAuditEntranceService auditService;
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/admin")
+    public ResponseEntity<?> onRegisterByAdminEntrance(
+            @RequestBody GateUserAuditRegisterEntranceDTO entranceDTO
+    ) {
+        auditService.registerEntranceByCpf(entranceDTO.targetCPF());
+        return ResponseEntity.ok("Entrada registrada com sucesso.");
+    }
+
+    @PostMapping("/self")
+    public ResponseEntity<?> onRegisterSelfEntrance(
+            @AuthenticationPrincipal GateUser gateUser
+    ) {
+        auditService.registerEntrance(gateUser);
+        return ResponseEntity.ok("Entrada registrada com sucesso.");
+    }
+}

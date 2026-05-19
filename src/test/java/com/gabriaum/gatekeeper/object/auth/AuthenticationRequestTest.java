@@ -1,5 +1,6 @@
 package com.gabriaum.gatekeeper.object.auth;
 
+import com.gabriaum.gatekeeper.auth.AuthenticationRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

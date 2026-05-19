@@ -1,10 +1,10 @@
 package com.gabriaum.gatekeeper.object.auth;
 
 import com.gabriaum.gatekeeper.infra.service.CryptographyService;
-import com.gabriaum.gatekeeper.object.auth.dto.AuthenticationLoginRequestDTO;
-import com.gabriaum.gatekeeper.object.auth.service.AuthenticationLoginService;
-import com.gabriaum.gatekeeper.object.user.GateUser;
-import com.gabriaum.gatekeeper.object.user.repository.GateUserRepository;
+import com.gabriaum.gatekeeper.auth.dto.AuthenticationLoginRequestDTO;
+import com.gabriaum.gatekeeper.auth.service.AuthenticationLoginService;
+import com.gabriaum.gatekeeper.user.GateUser;
+import com.gabriaum.gatekeeper.user.repository.GateUserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

@@ -1,6 +1,7 @@
 package com.gabriaum.gatekeeper.object.user;
 
-import com.gabriaum.gatekeeper.object.user.enums.GateUserRole;
+import com.gabriaum.gatekeeper.user.GateUser;
+import com.gabriaum.gatekeeper.user.enums.GateUserRole;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

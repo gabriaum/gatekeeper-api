@@ -1,9 +1,9 @@
 package com.gabriaum.gatekeeper;
 
 import com.gabriaum.gatekeeper.infra.service.CryptographyService;
-import com.gabriaum.gatekeeper.object.user.GateUser;
-import com.gabriaum.gatekeeper.object.user.enums.GateUserRole;
-import com.gabriaum.gatekeeper.object.user.repository.GateUserRepository;
+import com.gabriaum.gatekeeper.user.GateUser;
+import com.gabriaum.gatekeeper.user.enums.GateUserRole;
+import com.gabriaum.gatekeeper.user.repository.GateUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

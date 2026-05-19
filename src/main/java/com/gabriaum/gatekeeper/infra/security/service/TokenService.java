@@ -2,8 +2,8 @@ package com.gabriaum.gatekeeper.infra.security.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.gabriaum.gatekeeper.object.user.GateUser;
-import com.gabriaum.gatekeeper.object.user.repository.GateUserRepository;
+import com.gabriaum.gatekeeper.user.GateUser;
+import com.gabriaum.gatekeeper.user.repository.GateUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

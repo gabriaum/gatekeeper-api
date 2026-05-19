@@ -1,6 +1,6 @@
 package com.gabriaum.gatekeeper.infra.security.service;
 
-import com.gabriaum.gatekeeper.object.user.repository.GateUserRepository;
+import com.gabriaum.gatekeeper.user.repository.GateUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
