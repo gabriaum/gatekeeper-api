@@ -1,14 +1,13 @@
 package com.gabriaum.gatekeeper.infra.security;
 
 import com.gabriaum.gatekeeper.infra.security.service.TokenService;
-import com.gabriaum.gatekeeper.object.user.GateUser;
-import com.gabriaum.gatekeeper.object.user.repository.GateUserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -20,7 +19,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
     private final TokenService tokenService;
-    private final GateUserRepository gateUserRepository;
+    private static final Logger log = LoggerFactory.getLogger(JwtAuthFilter.class);
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -30,14 +29,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             if (token.isEmpty()) return;
 
             if (tokenService.validateToken(token)) {
-                GateUser model = gateUserRepository
-                        .findByEmail(tokenService.getSubject(token))
-                        .orElse(null);
-
-                if (model == null) return;
-
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(model, null, model.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                try {
+                    UsernamePasswordAuthenticationToken authenticationToken = tokenService.getAuthentication(token);
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                } catch (Exception ex) {
+                    log.error("Failed to set authentication from token", ex);
+                }
             }
         }
 
