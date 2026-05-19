@@ -6,6 +6,7 @@ import com.gabriaum.gatekeeper.object.user.enums.GateUserRole;
 import com.gabriaum.gatekeeper.object.user.repository.GateUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -16,23 +17,48 @@ public class GateKeeperAdminUser implements CommandLineRunner {
     private final GateUserRepository repository;
     private final CryptographyService cryptographyService;
 
+    @Value("${ADMIN_CREATE:false}")
+    private boolean createAdmin;
+
+    @Value("${ADMIN_CPF:}")
+    private String adminCpf;
+
+    @Value("${ADMIN_EMAIL:}")
+    private String adminEmail;
+
+    @Value("${ADMIN_PASSWORD:}")
+    private String adminPassword;
+
     @Override
     public void run(String... args) throws Exception {
-        if (!repository.existsByRole(GateUserRole.ADMIN)) {
-            GateUser gateUser = new GateUser();
-            gateUser.setCpf("admin");
-            gateUser.setEmail("admin");
-            gateUser.setRole(GateUserRole.ADMIN);
-            gateUser.setPassword(cryptographyService.encryptPassword("admin"));
-
-            repository.save(gateUser);
-
-            log.info("O usuário administrativo foi criado com sucesso.");
-            log.info("");
-            log.info("Usuário: {}", gateUser.getUsername());
-            log.info("Senha: {}", "admin [" + gateUser.getPassword() + "]");
-            log.info("");
-            log.warn("[!] Altere as credenciais assim que possível!");
+        if (!createAdmin) {
+            log.debug("Default admin creation is disabled (ADMIN_CREATE=false)");
+            return;
         }
+
+        if (repository.existsByRole(GateUserRole.ADMIN)) {
+            log.debug("Admin user already exists, skipping default admin creation");
+            return;
+        }
+
+        if (adminCpf == null || adminCpf.isBlank() || adminEmail == null || adminEmail.isBlank() || adminPassword == null || adminPassword.isBlank()) {
+            log.warn("ADMIN_CREATE is true but admin credentials (ADMIN_CPF, ADMIN_EMAIL, ADMIN_PASSWORD) are not fully provided. Skipping creation.");
+            return;
+        }
+
+        GateUser gateUser = new GateUser();
+        gateUser.setCpf(adminCpf);
+        gateUser.setEmail(adminEmail);
+        gateUser.setRole(GateUserRole.ADMIN);
+        gateUser.setPassword(cryptographyService.encryptPassword(adminPassword));
+
+        repository.save(gateUser);
+
+        log.info("O usuário administrativo foi criado com sucesso.");
+        log.info("");
+        log.info("Usuário: {}", gateUser.getUsername());
+        log.info("Senha: {}", "[HIDDEN]");
+        log.info("");
+        log.warn("[!] Altere as credenciais assim que possível!");
     }
 }
