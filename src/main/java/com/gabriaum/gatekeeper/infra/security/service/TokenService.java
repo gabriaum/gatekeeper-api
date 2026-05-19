@@ -5,6 +5,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.gabriaum.gatekeeper.object.user.GateUser;
 import com.gabriaum.gatekeeper.object.user.repository.GateUserRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 @RequiredArgsConstructor
 public class TokenService {
+    private static final Logger log = LoggerFactory.getLogger(TokenService.class);
 
     @Value("${api.security.token.secret}")
     private String secret;
@@ -31,57 +34,44 @@ public class TokenService {
 
     public boolean checkToken(GateUser user, String token) {
         try {
-            String subject = JWT.require(Algorithm.HMAC256(secret))
-                    .withIssuer("gatekeeper-api")
-                    .build()
-                    .verify(token)
-                    .getSubject();
+            String subject = verifyAndGetSubject(token);
             return subject.equals(user.getCpf());
         } catch (Exception ex)  {
-            ex.printStackTrace();
+            log.error("Error while checking token", ex);
+            return false;
         }
-
-        return false;
     }
 
     public boolean validateToken(String token) {
         try {
-            JWT.require(Algorithm.HMAC256(secret))
-                    .withIssuer("gatekeeper-api")
-                    .build()
-                    .verify(token);
+            verifyAndGetSubject(token);
             return true;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.error("Invalid token", ex);
+            return false;
         }
-
-        return false;
     }
 
     public String getSubject(String token) {
-        return JWT.require(Algorithm.HMAC256(secret))
-                .withIssuer("gatekeeper-api")
-                .build()
-                .verify(token)
-                .getSubject();
+        return verifyAndGetSubject(token);
     }
 
     public UsernamePasswordAuthenticationToken getAuthentication(String token) {
-        String userCPF = JWT.require(Algorithm.HMAC256(secret))
-                .withIssuer("gatekeeper-api")
-                .build()
-                .verify(token)
-                .getSubject();
+        String userCPF = verifyAndGetSubject(token);
         GateUser user = repository.findByCpf(userCPF).orElseThrow();
         return new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
     }
 
     public GateUser getUserDetails(String token) {
-        String userCPF = JWT.require(Algorithm.HMAC256(secret))
+        String userCPF = verifyAndGetSubject(token);
+        return repository.findByCpf(userCPF).orElseThrow();
+    }
+
+    private String verifyAndGetSubject(String token) {
+        return JWT.require(Algorithm.HMAC256(secret))
                 .withIssuer("gatekeeper-api")
                 .build()
                 .verify(token)
                 .getSubject();
-        return repository.findByCpf(userCPF).orElseThrow();
     }
 }
