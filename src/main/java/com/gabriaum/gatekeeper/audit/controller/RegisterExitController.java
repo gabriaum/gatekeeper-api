@@ -1,7 +1,7 @@
 package com.gabriaum.gatekeeper.audit.controller;
 
-import com.gabriaum.gatekeeper.audit.dto.GateUserAuditRegisterEntranceDTO;
-import com.gabriaum.gatekeeper.audit.service.GateUserAuditExitService;
+import com.gabriaum.gatekeeper.audit.dto.RegisterEntranceDTO;
+import com.gabriaum.gatekeeper.audit.service.ExitService;
 import com.gabriaum.gatekeeper.user.GateUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/audit/register/exit")
 @RequiredArgsConstructor
-public class GateUserAuditRegisterExitController {
-    private final GateUserAuditExitService auditExitService;
+public class RegisterExitController {
+    private final ExitService auditExitService;
 
     @PostMapping("/self")
     public ResponseEntity<?> registerExit(
@@ -29,7 +29,7 @@ public class GateUserAuditRegisterExitController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/admin")
     public ResponseEntity<?> registerExitByCpf(
-            @RequestBody GateUserAuditRegisterEntranceDTO dto
+            @RequestBody RegisterEntranceDTO dto
     ) {
         auditExitService.registerExitByCpf(dto.targetCPF());
         return ResponseEntity.ok("Saída registrada com sucesso.");

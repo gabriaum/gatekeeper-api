@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.Instant;
 
-public record AuthenticationRequestResponseDTO(
+public record AuthenticationRequestDTO(
         @NotNull Long id,
         @NotNull String cpf,
         @NotNull String email,

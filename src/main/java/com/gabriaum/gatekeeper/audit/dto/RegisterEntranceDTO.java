@@ -1,5 +1,5 @@
 package com.gabriaum.gatekeeper.audit.dto;
 
-public record GateUserAuditRegisterEntranceDTO(
+public record RegisterEntranceDTO(
         String targetCPF
 ) {}

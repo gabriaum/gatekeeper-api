@@ -1,6 +1,6 @@
 package com.gabriaum.gatekeeper.auth.dto;
 
-public record AuthenticationRegisterRequestDTO(
+public record RegisterRequestDTO(
         String cpf,
         String email,
         String password

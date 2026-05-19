@@ -1,8 +1,8 @@
 package com.gabriaum.gatekeeper.object.auth;
 
 import com.gabriaum.gatekeeper.infra.service.CryptographyService;
-import com.gabriaum.gatekeeper.auth.dto.AuthenticationLoginRequestDTO;
-import com.gabriaum.gatekeeper.auth.service.AuthenticationLoginService;
+import com.gabriaum.gatekeeper.auth.dto.LoginRequestDTO;
+import com.gabriaum.gatekeeper.auth.service.LoginService;
 import com.gabriaum.gatekeeper.user.GateUser;
 import com.gabriaum.gatekeeper.user.repository.GateUserRepository;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class AuthenticationLoginServiceTest {
+class LoginServiceTest {
     @Mock
     private GateUserRepository gateUserRepository;
 
@@ -25,12 +25,12 @@ class AuthenticationLoginServiceTest {
     private CryptographyService cryptographyService;
 
     @InjectMocks
-    private AuthenticationLoginService service;
+    private LoginService service;
 
     @Test
     void shouldReturnUserWhenCpfAndPasswordAreValid() {
-        AuthenticationLoginRequestDTO dto =
-                new AuthenticationLoginRequestDTO("123", null, "senha");
+        LoginRequestDTO dto =
+                new LoginRequestDTO("123", null, "senha");
 
         GateUser user = new GateUser();
         user.setPassword("hashed");
@@ -49,8 +49,8 @@ class AuthenticationLoginServiceTest {
 
     @Test
     void shouldReturnUserWhenEmailAndPasswordAreValid() {
-        AuthenticationLoginRequestDTO dto =
-                new AuthenticationLoginRequestDTO(null, "email@test.com", "senha");
+        LoginRequestDTO dto =
+                new LoginRequestDTO(null, "email@test.com", "senha");
 
         GateUser user = new GateUser();
         user.setPassword("hashed");
@@ -68,8 +68,8 @@ class AuthenticationLoginServiceTest {
 
     @Test
     void shouldReturnNullWhenUserNotFound() {
-        AuthenticationLoginRequestDTO dto =
-                new AuthenticationLoginRequestDTO("123", null, "senha");
+        LoginRequestDTO dto =
+                new LoginRequestDTO("123", null, "senha");
 
         when(gateUserRepository.findByCpf("123"))
                 .thenReturn(Optional.empty());
@@ -81,8 +81,8 @@ class AuthenticationLoginServiceTest {
 
     @Test
     void shouldReturnNullWhenPasswordIsInvalid() {
-        AuthenticationLoginRequestDTO dto =
-                new AuthenticationLoginRequestDTO("123", null, "senha");
+        LoginRequestDTO dto =
+                new LoginRequestDTO("123", null, "senha");
 
         GateUser user = new GateUser();
         user.setPassword("hashed");

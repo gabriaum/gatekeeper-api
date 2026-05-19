@@ -1,7 +1,7 @@
 package com.gabriaum.gatekeeper.auth;
 
 import com.gabriaum.gatekeeper.infra.service.CryptographyService;
-import com.gabriaum.gatekeeper.auth.dto.AuthenticationRegisterRequestDTO;
+import com.gabriaum.gatekeeper.auth.dto.RegisterRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +13,7 @@ public class AuthenticationRequestMapper {
     private final CryptographyService cryptographyService;
 
     public AuthenticationRequest toEntityByDTO(
-            AuthenticationRegisterRequestDTO requestDTO
+            RegisterRequestDTO requestDTO
     ) {
         AuthenticationRequest request = new AuthenticationRequest();
         request.setCpf(requestDTO.cpf());

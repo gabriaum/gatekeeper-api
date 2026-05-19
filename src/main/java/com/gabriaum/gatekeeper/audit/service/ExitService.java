@@ -13,7 +13,7 @@ import java.time.Instant;
 
 @Service
 @RequiredArgsConstructor
-public class GateUserAuditExitService {
+public class ExitService {
     private final GateUserAuditRepository auditRepository;
     private final GateUserRepository userRepository;
 
