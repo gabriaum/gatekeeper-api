@@ -5,10 +5,10 @@ services:
     restart: unless-stopped
 
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?MYSQL_ROOT_PASSWORD must be set}
       MYSQL_DATABASE: ${MYSQL_DATABASE:-gatekeeper}
       MYSQL_USER: ${MYSQL_USER:-gatekeeper}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-gatekeeper}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?MYSQL_PASSWORD must be set}
 
     ports:
       - "3306:3306"
@@ -17,7 +17,7 @@ services:
       - mysql_data:/var/lib/mysql
 
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -prootpassword"]
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$${MYSQL_ROOT_PASSWORD}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -34,9 +34,9 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-gatekeeper}?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: ${MYSQL_USER:-gatekeeper}
-      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD:-gatekeeper}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD:?MYSQL_PASSWORD must be set}
       # JWT secret for the API. In production, provide this via environment or Docker secrets.
-      JWT_SECRET: ${JWT_SECRET:-change_this_secret}
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET must be set}
       # Optional: create a default admin user on startup (set to "true" to enable). When enabled, set ADMIN_CPF, ADMIN_EMAIL and ADMIN_PASSWORD.
       ADMIN_CREATE: ${ADMIN_CREATE:-false}
       ADMIN_CPF: ${ADMIN_CPF:-}
