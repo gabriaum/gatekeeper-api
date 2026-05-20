@@ -34,8 +34,10 @@ Tambem há endpoints de auditoria para registrar entrada e saída de usuários a
   - `DB_PORT`
   - `DB_NAME`
   - `DB_USER`
+  - `DB_PASSWORD`
+  - `JWT_SECRET`
 
-> Observação: em `src/main/resources/application.properties`, `spring.datasource.password` esta vazio. Ajuste esse valor conforme seu ambiente.
+> Observação: `src/main/resources/application.properties` lê `spring.datasource.password` de `DB_PASSWORD` e o segredo JWT de `JWT_SECRET`.
 
 ## Configuração
 
@@ -64,10 +66,12 @@ No Linux/macOS:
 ./gradlew bootRun
 ```
 
-Ao iniciar, se não existir nenhum usuário `ADMIN`, o projeto cria automaticamente um usuário padrão:
+Criação de usuário `ADMIN` no startup:
 
-- usuário: `admin`
-- senha: `admin`
+- Só ocorre quando `ADMIN_CREATE=true`.
+- Requer `ADMIN_CPF`, `ADMIN_EMAIL` e `ADMIN_PASSWORD` preenchidos.
+- Se `ADMIN_CREATE=true` sem essas variáveis, a aplicação falha no startup com erro de configuração.
+- Se já existir um usuário com role `ADMIN`, nada é criado.
 
 Esse comportamento está em `src/main/java/com/gabriaum/gatekeeper/GateKeeperAdminUser.java`.
 
