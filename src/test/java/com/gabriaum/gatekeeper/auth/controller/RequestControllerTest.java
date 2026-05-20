@@ -4,6 +4,7 @@ import com.gabriaum.gatekeeper.auth.AuthenticationRequest;
 import com.gabriaum.gatekeeper.auth.AuthenticationRequestMapper;
 import com.gabriaum.gatekeeper.auth.factory.ResponseFactory;
 import com.gabriaum.gatekeeper.auth.repository.AuthenticationRequestRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -40,7 +41,7 @@ class RequestControllerTest {
     @MockitoBean
     private ResponseFactory requestResponseFactory;
 
-    @org.junit.jupiter.api.BeforeEach
+    @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .apply(SecurityMockMvcConfigurers.springSecurity())
