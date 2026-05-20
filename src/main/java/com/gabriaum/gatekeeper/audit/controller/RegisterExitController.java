@@ -4,6 +4,7 @@ import com.gabriaum.gatekeeper.audit.dto.RegisterEntranceDTO;
 import com.gabriaum.gatekeeper.audit.service.ExitService;
 import com.gabriaum.gatekeeper.user.GateUser;
 import lombok.RequiredArgsConstructor;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,7 +30,7 @@ public class RegisterExitController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/admin")
     public ResponseEntity<?> registerExitByCpf(
-            @RequestBody RegisterEntranceDTO dto
+            @Valid @RequestBody RegisterEntranceDTO dto
     ) {
         auditExitService.registerExitByCpf(dto.targetCPF());
         return ResponseEntity.ok("Saída registrada com sucesso.");

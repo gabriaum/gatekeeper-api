@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.lang.NonNull;
 
 @Slf4j
 @Component
@@ -30,7 +31,7 @@ public class GateKeeperAdminUser implements CommandLineRunner {
     private String adminPassword;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(@NonNull String... args) {
         if (!createAdmin) {
             log.debug("Default admin creation is disabled (ADMIN_CREATE=false)");
             return;
@@ -42,8 +43,7 @@ public class GateKeeperAdminUser implements CommandLineRunner {
         }
 
         if (adminCpf == null || adminCpf.isBlank() || adminEmail == null || adminEmail.isBlank() || adminPassword == null || adminPassword.isBlank()) {
-            log.warn("ADMIN_CREATE is true but admin credentials (ADMIN_CPF, ADMIN_EMAIL, ADMIN_PASSWORD) are not fully provided. Skipping creation.");
-            return;
+            throw new IllegalStateException("ADMIN_CREATE=true requires ADMIN_CPF, ADMIN_EMAIL and ADMIN_PASSWORD to be provided.");
         }
 
         GateUser gateUser = new GateUser();

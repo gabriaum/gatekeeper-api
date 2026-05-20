@@ -6,6 +6,7 @@ import com.gabriaum.gatekeeper.auth.dto.RegisterRequestDTO;
 import com.gabriaum.gatekeeper.auth.factory.ResponseFactory;
 import com.gabriaum.gatekeeper.auth.repository.AuthenticationRequestRepository;
 import lombok.RequiredArgsConstructor;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class RequestController {
 
     @PostMapping("/register")
     public ResponseEntity<?> onRegister(
-            @RequestBody RegisterRequestDTO requestDTO
+            @Valid @RequestBody RegisterRequestDTO requestDTO
     ) {
         AuthenticationRequest request = requestMapper.toEntityByDTO(requestDTO);
         requestRepository.save(request);

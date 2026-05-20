@@ -6,6 +6,7 @@ import com.gabriaum.gatekeeper.audit.service.EntranceService;
 import com.gabriaum.gatekeeper.user.GateUser;
 import com.gabriaum.gatekeeper.user.repository.GateUserRepository;
 import lombok.RequiredArgsConstructor;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,7 +26,7 @@ public class RegisterEntranceController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/admin")
     public ResponseEntity<?> onRegisterByAdminEntrance(
-            @RequestBody RegisterEntranceDTO entranceDTO
+            @Valid @RequestBody RegisterEntranceDTO entranceDTO
     ) {
         auditService.registerEntranceByCpf(entranceDTO.targetCPF());
         return ResponseEntity.ok("Entrada registrada com sucesso.");

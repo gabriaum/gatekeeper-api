@@ -1,5 +1,7 @@
 package com.gabriaum.gatekeeper.audit.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public record RegisterEntranceDTO(
-        String targetCPF
+        @NotBlank String targetCPF
 ) {}
