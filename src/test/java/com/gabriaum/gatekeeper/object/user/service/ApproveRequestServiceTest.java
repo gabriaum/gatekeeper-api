@@ -2,6 +2,7 @@ package com.gabriaum.gatekeeper.object.user.service;
 
 import com.gabriaum.gatekeeper.auth.AuthenticationRequest;
 import com.gabriaum.gatekeeper.auth.repository.AuthenticationRequestRepository;
+import com.gabriaum.gatekeeper.infra.exception.BusinessException;
 import com.gabriaum.gatekeeper.user.GateUser;
 import com.gabriaum.gatekeeper.user.factory.GateUserFactory;
 import com.gabriaum.gatekeeper.user.repository.GateUserRepository;
@@ -12,11 +13,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import org.springframework.http.HttpStatus;
 
 @ExtendWith(MockitoExtension.class)
 class ApproveRequestServiceTest {
@@ -58,9 +59,12 @@ class ApproveRequestServiceTest {
         when(requestRepository.findById(id))
                 .thenReturn(Optional.empty());
 
-        assertThrows(NoSuchElementException.class,
+        BusinessException exception = assertThrows(BusinessException.class,
                 () -> service.approveRequest(id)
         );
+
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+        assertEquals("AUTHENTICATION_REQUEST_NOT_FOUND", exception.getErrorCode());
 
         verify(repository, never()).save(any());
         verify(requestRepository, never()).deleteById(any());
